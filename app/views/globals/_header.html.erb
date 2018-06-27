@@ -1,0 +1,47 @@
+<nav class="navbar navbar-fixed-top navbar-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <%= link_to 'OBA DASHBOARD', root_path, class: 'navbar-brand' %>
+            <button type="button" class="sidebar-toggle">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <%= link_to '#', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do %>
+                    <%= image_tag '/assets/avatar.png', alt: 'avatar', class: 'img-circle' %>
+                <% end %>
+                <ul class="dropdown-menu dropdown-menu-profile">
+                    <li class="dropdown-header">Account Details</li>
+                    <li>
+                        <div class="media">
+                            <div class="media-left">
+                                <%= image_tag '/assets/avatar.png', alt: 'avatar', class: 'media-object img-circle' %>
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading"><%= current_user.name %></h5>
+                                <p><%= current_user.email %></p>
+                            </div>
+                        </div>
+                    </li>
+                    <% if can? :access, :rails_admin %>
+                        <li>
+                            <%= link_to rails_admin_path do %>
+                                <i class="fa fa-cogs"></i> Admin Panel
+                            <% end %>
+                        </li>
+                        <li class="divider"></li>
+                    <% end %>
+                    <li>
+                        <%= link_to destroy_user_session_path, method: :delete do %>
+                            <i class="fa fa-sign-out"></i> Sign Out
+                        <% end %>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

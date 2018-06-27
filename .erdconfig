@@ -1,0 +1,20 @@
+attributes:
+  - content
+  - foreign_key
+  - inheritance
+filename: erd
+filetype: pdf
+indirect: true
+inheritance: false
+markup: true
+notation: uml
+orientation: horizontal
+polymorphism: true
+sort: true
+title: OBA Dashboard ERD
+exclude: null
+only: null
+only_recursion_depth: null
+prepend_primary: false
+cluster: false
+splines: spline

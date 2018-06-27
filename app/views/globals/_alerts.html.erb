@@ -1,0 +1,5 @@
+<script type="text/javascript">
+    <% flash.each do |type, message| %>
+    toastr["<%= bootstrap_class_for(type) %>"]("<%= message %>");
+    <% end %>
+</script>

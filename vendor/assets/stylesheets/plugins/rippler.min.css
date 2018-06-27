@@ -1,0 +1,7 @@
+/*!
+ * rippler v0.1.1
+ * http://blivesta.github.io/rippler/
+ * Licensed under MIT
+ * Author : blivesta
+ * http://blivesta.com/
+ */.rippler{position:relative;overflow:hidden;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.rippler:active,.rippler:focus{outline:0}.rippler::-moz-focus-inner{border:0}.rippler-button{display:inline-block}.rippler-img{display:block}.rippler-circle-mask{border-radius:50%;-webkit-mask:url(../svg/circle.svg) no-repeat;-webkit-mask-size:100%}.rippler-effect{position:absolute;opacity:.4}.rippler .rippler-div{background-color:#fff}.rippler .rippler-svg{fill:#fff}.rippler-div{border-radius:50%}

@@ -1,0 +1,80 @@
+<div class="page-title-wrapper">
+    <h2 class="page-title">Dashboard</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default-light rounded">
+            <div class="panel-heading">
+                <div class="panel-title">Stream Status</div>
+                <div class="panel-tools">
+                    <%= simple_form_for :filter, url: :root, method: :get, html: {class: 'form-inline'} do |f| %>
+                        <%= f.input :from_date, as: :hidden, label: false, wrapper: false %>
+                        <%= f.input :to_date, as: :hidden, label: false, wrapper: false %>
+                        <%= f.input :stream, collection: Stream::STREAMS, selected: @stream.name || Stream::STREAM_1, include_blank: false, label: false, wrapper: false, input_html: {class: 'input-sm rounded m-right-5'} %>
+                        <div id="daterange-filter" class="btn btn-sm btn-default-outline rounded m-right-5">
+                            <i class="fa fa-calendar m-right-5"></i>
+                            <span></span>
+                            <i class="fa fa-angle-down m-left-5"></i>
+                        </div>
+                        <%= f.submit 'Filter', class: 'btn btn-success btn-sm rounded rippler' %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Stage</th>
+                        <th>Batch</th>
+                        <th>On Date</th>
+                        <th>Delay</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if @stream_statuses.present? %>
+                        <% @stream_statuses.each_with_index do |stream_status, index| %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= stream_status[:stage] %></td>
+                                <td><%= stream_status[:batch] %></td>
+                                <td><%= stream_status[:on_date] %></td>
+                                <td><%= stream_status[:delay] %></td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        daterange_filter = $('#daterange-filter');
+        if (daterange_filter.length > 0) {
+            start = moment('<%= @from_date %>');
+            end = moment('<%= @to_date %>');
+            setDaterange = function (start, end) {
+                daterange_filter.find('span').html((start.format('MMMM Do YYYY')) + " - " + (end.format('MMMM Do YYYY')));
+                $('#filter_from_date').val(start.format('DD/MM/YYYY'));
+                return $('#filter_to_date').val(end.format('DD/MM/YYYY'));
+            };
+            setDaterange(start, end);
+            return daterange_filter.daterangepicker({
+                applyClass: 'btn-primary',
+                opens: 'left',
+                startDate: start,
+                endDate: end,
+                locale: {
+                    format: 'MMMM Do YYYY'
+                }
+            }, function (start, end, label) {
+                setDaterange(start, end);
+            });
+        }
+    });
+</script>

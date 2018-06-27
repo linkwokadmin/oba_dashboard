@@ -1,0 +1,31 @@
+<div class="login-wrapper">
+    <div class="text-center">
+        <h1>OBA DASHBOARD</h1>
+    </div>
+
+    <div class="panel">
+        <div class="panel-body">
+            <h2>Forgot Password?</h2>
+
+            <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :post}) do |f| %>
+                <% f.error_notification %>
+
+                <p>Enter your e-mail address below to reset your password.</p>
+
+                <div class="form-inputs">
+                    <div class="form-group">
+                        <div class="input-icon-left m-top-15">
+                            <i class="fa fa-envelope input-icon"></i>
+                            <%= f.input :email, placeholder: 'Enter Email', label: false, required: true, autofocus: true, layout: false %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <%= f.button :submit, "Send me Reset Password Instructions", class: 'btn btn-primary btn-block rounded' %>
+                    <%= link_to 'Sign In', new_session_path(resource_name), class: 'm-top-5' %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

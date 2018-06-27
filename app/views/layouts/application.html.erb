@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OBA Dashboard</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body class="bg-grey">
+<%= render partial: 'globals/header' %>
+
+<div class="content-wrapper">
+    <%= render partial: 'globals/sidebar' %>
+
+    <div class="content">
+        <%= yield %>
+    </div>
+</div>
+
+<%= render partial: 'globals/footer' %>
+
+<%= render partial: 'globals/alerts' %>
+</body>
+</html>
