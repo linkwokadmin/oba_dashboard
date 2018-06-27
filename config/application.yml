@@ -10,5 +10,12 @@
 #   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
 #   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
 
+HOST_URL: oba-dashboard.herokuapp.com
+SMTP_HOST: smtp.gmail.com
+SMTP_PASSWORD: q7by<F5%@R
+SMTP_PORT: '587'
+SMTP_USERNAME: testuser@linkwok.com
+
 production:
+    RAILS_LOG_TO_STDOUT: 'true'
     SECRET_KEY_BASE: 8ab5362e41cbc91738cd4cd36119867274df6cb181b286d0264e7d248d1f81e940f763527e36bc816d08b3f18297207ddd66cf7bf73acd73651517996625df13

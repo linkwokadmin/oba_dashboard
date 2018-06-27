@@ -38,6 +38,7 @@ gem 'bootsnap', github: 'ojab/bootsnap', require: false
 
 gem 'cancancan', '~> 2.0'
 gem 'devise'
+gem 'exception_notification'
 gem 'figaro'
 gem 'rails_admin', '~> 1.3'
 gem 'rails_admin_import', '~> 2.1'
