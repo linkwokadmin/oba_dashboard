@@ -85,10 +85,6 @@
         date_range_picker.find('span').html((start.format('MMMM Do YYYY')) + " - " + (end.format('MMMM Do YYYY')));
         start_element.val(start.format('DD/MM/YYYY'));
         end_element.val(end.format('DD/MM/YYYY'));
-
-        console.log(date_range_picker);
-        console.log(start_element);
-        console.log(end_element);
     };
 
     initDateRangePicker = function (date_range_picker, start_date, end_date, start_element, end_element) {

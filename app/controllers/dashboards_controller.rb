@@ -1,5 +1,6 @@
 class DashboardsController < ApplicationController
     include ActionView::Helpers::DateHelper
+    skip_before_action :verify_authenticity_token, only: %i[reactor_attribute_data]
 
     def index
         if params[:stream_status_filter].present?

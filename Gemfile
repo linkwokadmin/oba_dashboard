@@ -43,6 +43,7 @@ gem 'figaro'
 gem 'rails_admin', '~> 1.3'
 gem 'rails_admin_import', '~> 2.1'
 
+gem 'font-awesome-rails'
 gem 'simple_form'
 
 group :development, :test do

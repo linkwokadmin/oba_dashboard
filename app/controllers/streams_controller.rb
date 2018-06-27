@@ -1,4 +1,6 @@
 class StreamsController < ApplicationController
+    skip_before_action :verify_authenticity_token, only: %i[get_segregated_products]
+
     def get_segregated_products
         data = []
 
