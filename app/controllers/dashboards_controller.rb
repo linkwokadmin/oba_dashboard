@@ -2,10 +2,10 @@ class DashboardsController < ApplicationController
     include ActionView::Helpers::DateHelper
 
     def index
-        if params[:filter].present?
-            @from_date = Date.strptime(params[:filter][:from_date], '%d/%m/%Y')
-            @to_date = Date.strptime(params[:filter][:to_date], '%d/%m/%Y')
-            @stream = Stream.find_by name: params[:filter][:stream]
+        if params[:stream_status_filter].present?
+            @from_date = Date.strptime(params[:stream_status_filter][:from_date], '%d/%m/%Y')
+            @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y')
+            @stream = Stream.find_by name: params[:stream_status_filter][:stream]
 
             @stream_statuses = []
 
@@ -46,5 +46,39 @@ class DashboardsController < ApplicationController
             @from_date = @to_date - 1.day
             @stream = Stream.find_by name: Stream::STREAM_1
         end
+    end
+
+    def reactor_attribute_data
+        data = {
+            labels: [],
+            datasets: [
+                {
+                    label: '',
+                    fill: false,
+                    backgroundColor: '#33b5e5',
+                    borderColor: '#33b5e5',
+                    data: []
+                }
+            ]
+        }
+
+        if params[:reactor_attribute_filter].present?
+            from_date = Date.strptime(params[:reactor_attribute_filter][:from_date], '%d/%m/%Y')
+            to_date = Date.strptime(params[:reactor_attribute_filter][:to_date], '%d/%m/%Y')
+            stream_product = params[:reactor_attribute_filter][:stream_product].split(',')
+            stream_id = stream_product[0].to_i
+            product_id = stream_product[1].to_i
+            data[:datasets][0][:label] = params[:reactor_attribute_filter][:attribute]
+            attribute = data[:datasets][0][:label].parameterize.underscore
+
+
+            batch_logs = BatchLog.includes(:batch).where(stream_id: stream_id, batches: {product_id: product_id}).where('timestamp >= ? AND timestamp <= ?', from_date, to_date)
+            batch_logs.each do |batch_log|
+                data[:labels] << batch_log.timestamp.to_s(:long)
+                data[:datasets][0][:data] << batch_log.send(attribute)
+            end
+        end
+
+        render json: data
     end
 end

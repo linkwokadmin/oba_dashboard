@@ -18,4 +18,5 @@
 #= require ./plugins/jqvmap
 #= require ./plugins/toastr
 #= require ./plugins/jquery.rippler.min
+#= require ./plugins/chart
 #= require_self

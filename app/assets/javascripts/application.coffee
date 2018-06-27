@@ -20,9 +20,9 @@
 
 $(document).ready ->
     $.fn.select2.defaults.set 'theme', 'bootstrap'
+    $.fn.select2.defaults.set 'containerCssClass', ':all:'
 
-    $('select.select').select2
-        containerCssClass: ':all:'
+    $('select.default-select2').select2()
 
     $('.rippler').rippler
         effectClass: 'rippler-effect'

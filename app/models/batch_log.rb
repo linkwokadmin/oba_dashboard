@@ -1,4 +1,6 @@
 class BatchLog < ApplicationRecord
+    ATTRIBUTES = ['Reactor Weight', 'Reactor Level', 'Reactor pH', 'Internal Temperature', 'Internal pH']
+
     belongs_to :batch, optional: true
     belongs_to :stream
     belongs_to :stage
