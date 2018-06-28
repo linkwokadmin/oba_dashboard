@@ -29,5 +29,4 @@ test:
 
 production:
   <<: *local
-  #database: oba_dashboard_production
-  database: oba_dashboard_development
+  database: oba_dashboard_production
