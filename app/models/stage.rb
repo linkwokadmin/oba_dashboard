@@ -12,4 +12,8 @@ class Stage < ApplicationRecord
     has_many :reactors, dependent: :destroy
     has_many :master_bmrs
     has_many :batch_logs
+
+    def name_short
+        self.name[/(.*)\s/,1].strip
+    end
 end

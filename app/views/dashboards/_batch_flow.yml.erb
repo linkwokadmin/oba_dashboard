@@ -1,0 +1,41 @@
+<% if batch.present? %>
+<%-
+    product = batch.product
+    stream = Stream.find(batch.batch_logs.pluck(:stream_id).uniq.first)
+    master_bmr = product.master_bmrs.where(initial: true).first
+    current_reactors = []
+    new_reactors = []
+-%>
+
+graph LR
+    <% while master_bmr.present? %>
+    subgraph <%= master_bmr.stage.name.titleize %>
+        <% master_bmr.stage.reactors.includes(:stream_reactors).where(stream_reactors: {stream: stream}).each do |reactor| %>
+        <%-
+            batch_logs = batch.batch_logs.where(reactor: reactor).order(timestamp: :asc)
+            if batch_logs.present?
+                batch_reactor_details = "<br/>Batch: #{batch.name}<br/>Start Time: #{batch_logs.first.timestamp.to_s(:long) rescue ''}<br/>End Time: #{batch_logs.last.timestamp.to_s(:long) rescue ''}"
+                delay = (batch_logs.last.timestamp - batch_logs.first.timestamp) - master_bmr.bct
+                batch_reactor_details += "<br/>Delay: #{(delay >= 0) ? distance_of_time_in_words(delay) : 'None'}"
+            end
+         -%>
+        <%= reactor.label %>("Reactor: <%= reactor.label %><%= batch_reactor_details %>")
+        <%-
+            new_reactors << reactor.label
+         -%>
+        <% end %>
+
+        <% if current_reactors.present? %>
+            <% current_reactors.product(new_reactors).each do |reactor_mapping| %>
+                <%= reactor_mapping[0] %> --> <%= reactor_mapping[1] %>
+            <% end %>
+        <% end %>
+
+        <%-
+            master_bmr = master_bmr.children.first
+            current_reactors = new_reactors
+            new_reactors = []
+         -%>
+    end
+    <% end %>
+<% end %>

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
     resources :dashboards, only: %i[index] do
         collection do
+            get :batch_flow
+
             post :reactor_attribute_data
         end
     end

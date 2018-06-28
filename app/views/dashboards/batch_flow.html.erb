@@ -1,0 +1,43 @@
+<div class="page-title-wrapper">
+    <h2 class="page-title">Batch Flow</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default-light rounded">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <% if @batch.present? %>
+                        <%= "#{@batch.name} Details: #{}" %>
+                    <% else %>
+                        Batch Details
+                    <% end %>
+                </div>
+                <div class="panel-tools">
+                    <%= simple_form_for :batch_details_filter, url: :batch_flow_dashboards, method: :get, html: {class: 'form-inline'} do |f| %>
+                        <%= f.input :batch, collection: Batch.all.order(name: :asc), label: false, wrapper: false, input_html: {class: 'default-select2 input-sm rounded m-right-5'} %>
+                        <%= f.submit 'Filter', class: 'btn btn-success btn-sm rounded rippler', data: {disable_with: 'Processing...'} %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div id="batch-stage-flow" class="mermaid">
+                    <%= render partial: 'dashboards/batch_flow', formats: :yml, locals: {batch: @batch} %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        mermaid.initialize({
+            startOnLoad: true,
+            flowchart: {
+                htmlLabels: true,
+                useMaxWidth: true
+            }
+        }, $('#batch-stage-flow'));
+    });
+</script>

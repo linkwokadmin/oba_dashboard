@@ -31,3 +31,5 @@
 
 # Ignore RubyMine Stuff
 /.idea
+
+/db/dumps/*

@@ -15,6 +15,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
     inflect.acronym 'API'
     inflect.acronym 'BCT'
     inflect.acronym 'BMR'
+    inflect.acronym 'CC'
     inflect.acronym 'OBA'
     inflect.acronym 'UUID'
     inflect.acronym 'WIP'

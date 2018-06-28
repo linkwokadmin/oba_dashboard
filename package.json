@@ -5,6 +5,7 @@
         "bootstrap": "^3.3.7",
         "chart.js": "^2.7.2",
         "jquery": "^3.0.0",
+        "mermaid": "^8.0.0-rc.8",
         "npm": "^6.1.0",
         "toastr": "^2.1.4"
     }

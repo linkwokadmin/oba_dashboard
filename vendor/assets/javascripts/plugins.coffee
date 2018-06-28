@@ -19,4 +19,5 @@
 #= require ./plugins/toastr
 #= require ./plugins/jquery.rippler.min
 #= require ./plugins/chart
+#= require mermaid/dist/mermaid.min.js
 #= require_self
