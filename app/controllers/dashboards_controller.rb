@@ -4,8 +4,8 @@ class DashboardsController < ApplicationController
 
     def index
         if params[:stream_status_filter].present?
-            @from_date = Date.strptime(params[:stream_status_filter][:from_date], '%d/%m/%Y')
-            @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y')
+            @from_date = Date.strptime(params[:stream_status_filter][:from_date], '%d/%m/%Y').beginning_of_day
+            @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y').end_of_day
             @stream = Stream.find_by name: params[:stream_status_filter][:stream]
             @stage = Stage.find_by name: params[:stream_status_filter][:stage]
 
@@ -13,9 +13,9 @@ class DashboardsController < ApplicationController
             total_delay = 0
             count = 0
 
-            batches = Batch.where(id: BatchLog.where(stream: @stream, stage: @stage).pluck(:batch_id).uniq)
+            batches = Batch.where(id: BatchLog.where(stream: @stream, stage: @stage).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq)
             batches.each do |batch|
-                batch_logs = batch.batch_logs.where(stream: @stream, stage: @stage).order(timestamp: :asc)
+                batch_logs = batch.batch_logs.where(stream: @stream, stage: @stage).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
                 batch_start_time = batch_logs.first.timestamp
                 batch_end_time = batch_logs.last.timestamp
 
@@ -76,8 +76,8 @@ class DashboardsController < ApplicationController
         count = 0
 
         if params[:reactor_attribute_filter].present?
-            from_date = Date.strptime(params[:reactor_attribute_filter][:from_date], '%d/%m/%Y')
-            to_date = Date.strptime(params[:reactor_attribute_filter][:to_date], '%d/%m/%Y')
+            from_date = Date.strptime(params[:reactor_attribute_filter][:from_date], '%d/%m/%Y').beginning_of_day
+            to_date = Date.strptime(params[:reactor_attribute_filter][:to_date], '%d/%m/%Y').end_of_day
             stream_product = params[:reactor_attribute_filter][:stream_product].split(',')
             stream_id = stream_product[0].to_i
             product_id = stream_product[1].to_i
