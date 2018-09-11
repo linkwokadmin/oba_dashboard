@@ -1,0 +1,119 @@
+<style>
+.select2{
+  min-width: 20em;
+}
+</style>
+<div class="page-title-wrapper">
+    <h2 class="page-title">Batch Flow</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default-light rounded">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <% if @batch.present? %>
+                        <%= "#{@batch.name} Details: #{}" %>
+                    <% else %>
+                        Batch Details
+                    <% end %>
+                </div>
+                <div class="panel-tools">
+                    <%= simple_form_for :batch_details_filter, url: :batch_flow_state_dashboards, method: :get, html: {class: 'form-inline'} do |f| %>
+                        <%= f.input :batch, collection: @btchlst, label: false, wrapper: false, input_html: {class: 'default-select2 rounded'} %>
+                        <%= f.submit 'Filter', class: 'btn btn-success btn-sm rounded rippler', data: {disable_with: 'Processing...'} %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="panel-body">
+              <% if @batch.present? %>
+              <div class="caption">
+                            <h3>Batch Summary</h3>
+
+                          </div>
+              <table class="table table-condensed table-bordered table-hover rounded">
+                  <thead>
+                  <tr>
+                      <th>Batch</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                        <tr>
+                          <td><%= @batch.name %></td>
+                          <td><%= BatchLog.where(batch:@batch).order("timestamp asc").first.timestamp.to_s(:long) rescue 'NA' %></td>
+                          <td><%= BatchLog.where(batch:@batch).order("timestamp asc").last.timestamp.to_s(:long) rescue 'NA' %></td>
+                      </tr>
+                  </tbody>
+              </table>
+              <% end %>
+
+              <div class="caption">
+                            <h3>Batch Flow</h3>
+
+                          </div>
+
+                <div id="batch-stage-flow" class="mermaid">
+                    <%= render partial: 'dashboards/batch_flow', formats: :yml, locals: {batch: @batch} %>
+                </div>
+
+                <% if @batch.present? %>
+                <div class="caption">
+                              <h3>Batch Statistics</h3>
+                </div>
+                <table class="table table-condensed table-bordered table-hover rounded">
+                    <thead>
+                    <tr>
+                      <th> </th>
+                      <% Stage::STAGES.each do |s| %>
+                        <th><%=s%></th>
+                      <% end %>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <% Stream::STREAMS.each do |s|
+                      @strm = Stream.find_by name: s %>
+                          <tr>
+                            <td><%=s%></td>
+                            <% Stage::STAGES.each do |t|
+                                @stg  = Stage.find_by name: t
+                                bct_plan = @batch.product.master_bmrs.where(stage: @stg).first.bct
+                                total_delay = 0
+                                count = 0
+                                @batches.each do |btch|
+                                    batch_logs = btch.batch_logs.where(stream: @strm, stage: @stg).order(timestamp: :asc)
+                                    if batch_logs.count > 0
+                                      batch_start_time = batch_logs.first.timestamp
+                                      batch_end_time = batch_logs.last.timestamp
+                                      bct_actual = batch_end_time - batch_start_time
+                                      delay = bct_actual - bct_plan
+                                      total_delay += ((delay > 0) ? delay : 0)
+                                      count += 1
+                                    end
+                                end # end of @batches
+                            %>
+                              <td><%=((count > 0) ? distance_of_time_in_words(total_delay / count) : "NA")%></td>
+                            <% end %>
+                          </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        mermaid.initialize({
+            startOnLoad: true,
+            flowchart: {
+                htmlLabels: true,
+                useMaxWidth: true
+            }
+        }, $('#batch-stage-flow'));
+    });
+</script>

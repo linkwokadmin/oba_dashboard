@@ -1,5 +1,5 @@
 #= require jquery/dist/jquery.min.js
-#= require bootstrap/dist/js/bootstrap.min
+# require bootstrap/dist/js/bootstrap.min
 #= require ./plugins/jquery-ui.min
 #= require ./plugins/jquery.slimscroll.min
 #= require ./plugins/basil.min
@@ -19,5 +19,7 @@
 #= require ./plugins/toastr
 #= require ./plugins/jquery.rippler.min
 #= require ./plugins/chart
+#= require ./plugins/fullcalendar.min
+
 #= require mermaid/dist/mermaid.min.js
 #= require_self

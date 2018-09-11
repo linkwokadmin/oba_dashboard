@@ -56,7 +56,47 @@ class DashboardsController < ApplicationController
     def batch_flow
         if params[:batch_details_filter].present?
             @batch = Batch.find params[:batch_details_filter][:batch] rescue nil
+
+
         end
+    end
+    def batch_flow_state
+      @btchlst = Batch.find_by_sql ["select bl.batch_id as id, concat(b.name, ' - ',to_char(min(bl.timestamp),'DD Mon YYYY')) as name from batch_logs as bl, batches as b where bl.batch_id=b.id group by bl.batch_id,b.name order by min(timestamp) desc"]
+
+      if params[:batch_details_filter].present?
+          @batch = Batch.find params[:batch_details_filter][:batch] rescue nil
+           if @batch
+             #@stages=[]
+
+             @batches = Batch.where(product:@batch.product,id: BatchLog.where('timestamp >= ? ', 30.days.ago.beginning_of_day).pluck(:batch_id).uniq)
+          #
+          #   @batch.product.master_bmrs each do |stage|
+          #
+          #     batches.each do |b|
+          #
+          #     end # end of batches
+          #
+          #   end # end of stage
+          #
+           end # end of if @batch
+      end
+    end
+    def batch_calendar
+
+    end
+
+    def batch_event
+      # data = []
+      # batch_logs = BatchLog.includes(:batch).where('timestamp >= ? AND timestamp <= ?', params[:start], params[:end]).group().order("timestamp asc")
+      # batch_logs.each do |bl|
+      #   data << [['id', bl.id],['title',bl.name],['start',bl.batch_log.timestamp]]
+      # end
+      # @batch = BatchLog.all.select("id,name as title,created_at as start") rescue nil
+      @batch = Batch.all.select("batches.id,batches.name as title, min(batch_logs.timestamp) as start,concat('/dashboards/batch_flow?batch_details_filter[batch]=',batches.id) as url")
+            .joins(:batch_logs)
+            .group("batches.id")
+            .where('batch_logs.timestamp >= ? AND batch_logs.timestamp <= ?', params[:start], params[:end]) rescue nil
+      render json: @batch
     end
 
     def reactor_attribute_data

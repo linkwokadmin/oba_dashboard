@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     resources :dashboards, only: %i[index] do
         collection do
             get :batch_flow
+            get :batch_flow_state
+            get :batch_calendar
+            get :batch_event
 
             post :reactor_attribute_data
         end

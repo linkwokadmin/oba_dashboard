@@ -1,0 +1,61 @@
+<div class="page-title-wrapper">
+    <h2 class="page-title">Batch Calendar</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default-light rounded">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <% if @batch.present? %>
+                        <%= "#{@batch.name} Details: #{}" %>
+                    <% else %>
+                        Monthly Batches
+                    <% end %>
+                </div>
+
+            </div>
+
+            <div class="panel-body">
+              <div class="m-top-30" id="calendar">
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+      /* initialize the calendar
+   -----------------------------------------------------------------*/
+   var myDate = new Date();
+   var currentYear = myDate.getFullYear();
+   var currentMonth = myDate.getMonth() + 1;
+   currentMonth = (currentMonth < 10) ? 0 + '' + currentMonth: currentMonth;
+
+
+   $("#calendar").fullCalendar({
+     header: {
+       left: "prev,next,title",
+       right: "month"
+     },
+     buttonText: {
+       today: 'Today',
+       month: 'Month',
+       week:  'Week',
+       day:   'Day'
+     },
+
+     eventLimit: true, // allow "more" link when too many events
+     events: {
+       url: '/dashboards/batch_event',
+       data: function() { // a function that returns an object
+      return {
+        dynamic_value: Math.random()
+      };
+    },
+       cache: true
+     }
+   });
+    });
+</script>
