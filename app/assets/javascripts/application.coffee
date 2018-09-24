@@ -14,5 +14,4 @@
 #= require activestorage
 # require turbolinks
 #= require cable
-#= require fullcalendar.min
 #= require_self
