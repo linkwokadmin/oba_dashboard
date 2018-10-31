@@ -45,8 +45,8 @@
 
 
         <h3>Actual for <%= @today %></h3>
-        <%-
-          BatchLog.where(:start_time)
+        <%=
+          BatchLog.where("timestamp > ? AND timestamp <= ? ",Time.now.beginning_of_day,Time.now.end_of_day).pluck(:batch_id).compact.uniq
 
         %>
         <table class="table table-responsive table-bordered">
