@@ -12,10 +12,7 @@
 
         </div>
         <div class="panel-tools">
-          <%= form_tag :batch_details_filter, url: :batch_flow_dashboards, method: :get, html: {class: 'form-inline'} do |f| %>
-            <%= f.input :batch, collection: Batch.all.order(name: :asc), label: false, wrapper: false, input_html: {class: 'default-select2 input-sm rounded m-right-5'} %>
-            <%= f.submit 'Filter', class: 'btn btn-success btn-sm rounded rippler', data: {disable_with: 'Processing...'} %>
-          <% end %>
+
         </div>
       </div>
 
