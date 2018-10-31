@@ -83,6 +83,12 @@ class DashboardsController < ApplicationController
     end
     def batch_calendar
 
+
+    end
+
+    def batch_daily_report
+        @today = Date.today - 1.days
+
     end
 
     def batch_event
@@ -98,6 +104,24 @@ class DashboardsController < ApplicationController
             .where('batch_logs.timestamp >= ? AND batch_logs.timestamp <= ?', params[:start], params[:end]) rescue nil
       render json: @batch
     end
+
+
+    def batch_report_event
+      # data = []
+      # batch_logs = BatchLog.includes(:batch).where('timestamp >= ? AND timestamp <= ?', params[:start], params[:end]).group().order("timestamp asc")
+      # batch_logs.each do |bl|
+      #   data << [['id', bl.id],['title',bl.name],['start',bl.batch_log.timestamp]]
+      # end
+      # @batch = BatchLog.all.select("id,name as title,created_at as start") rescue nil
+      @batch = Batch.all.select("batches.id,batches.name as title, min(batch_logs.timestamp) as start,concat('/dashboards/batch_flow?batch_details_filter[batch]=',batches.id) as url")
+            .joins(:batch_logs)
+            .group("batches.id")
+            .where('batch_logs.timestamp >= ? AND batch_logs.timestamp <= ?', params[:start], params[:end]) rescue nil
+      render json: @batch
+    end
+
+
+
 
     def reactor_attribute_data
         data = {

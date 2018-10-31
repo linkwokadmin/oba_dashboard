@@ -11,6 +11,7 @@ Rails.application.routes.draw do
             get :batch_flow_state
             get :batch_calendar
             get :batch_event
+            get :batch_daily_report
 
             post :reactor_attribute_data
         end

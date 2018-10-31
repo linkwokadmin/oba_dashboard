@@ -24,8 +24,18 @@ live: &live
     database: oba_dashboard_production
 
 development:
-    <<: *local
-    database: oba_dashboard_development
+    <<: *default
+    host: 172.16.0.22
+    username: postgres
+    password: postgres
+    database: oba_dashboard_production
+
+production_planner:
+    <<: *default
+    host: 172.16.0.22
+    username: postgres
+    password: postgres
+    database: production_planner_production
 
 
 # Warning: The database defined as "test" will be erased and

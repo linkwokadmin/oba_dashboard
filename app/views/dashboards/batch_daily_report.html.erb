@@ -1,0 +1,67 @@
+<div class="page-title-wrapper">
+  <h2 class="page-title">Batch Flow</h2>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default-light rounded">
+      <div class="panel-heading">
+        <div class="panel-title">
+
+            Daily Report - Planned vs Actual
+
+        </div>
+        <div class="panel-tools">
+          <%= form_tag :batch_details_filter, url: :batch_flow_dashboards, method: :get, html: {class: 'form-inline'} do |f| %>
+            <%= f.input :batch, collection: Batch.all.order(name: :asc), label: false, wrapper: false, input_html: {class: 'default-select2 input-sm rounded m-right-5'} %>
+            <%= f.submit 'Filter', class: 'btn btn-success btn-sm rounded rippler', data: {disable_with: 'Processing...'} %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="panel-body">
+
+        <h3>Planned for <%= @today %></h3>
+        <%-
+          production_planner = ActiveRecord::Base.establish_connection(:production_planner).connection
+          batch_plans = production_planner.execute("SELECT * FROM batch_plans WHERE for_date > '2018-10-29' AND for_date < '2018-10-30' AND plan_type='actual'").to_a
+          products = production_planner.execute("SELECT * FROM products").to_a
+          plan_details = []
+          batch_plans.each do |bp|
+            prd = products.select { |p| p["id"]== bp["product_id"]}
+            plan_details << {product: prd[0]["name"],no_of_batches: bp["number_of_batches"] }
+          end
+
+        %>
+        <table class="table table-responsive table-bordered">
+          <tr>
+            <th>Product</th>
+            <th>No. Of Batches</th>
+          </tr>
+          <% plan_details.each do |pd| %>
+          <tr>
+            <td><%= pd['product'] %></td>
+            <td><%= pd['no_of_batches'] %></td>
+          </tr>
+          <% end %>
+        </table>
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        mermaid.initialize({
+            startOnLoad: true,
+            flowchart: {
+                htmlLabels: true,
+                useMaxWidth: true
+            }
+        }, $('#batch-stage-flow'));
+    });
+</script>
