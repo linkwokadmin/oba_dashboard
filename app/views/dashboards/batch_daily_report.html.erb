@@ -57,7 +57,7 @@
           <% Product.where(:id => @batches.pluck(:product_id).uniq).each do |pd| %>
           <tr>
             <td><%= pd.name %></td>
-            <td><%= @batches.where(:product_id => pd.id).count %></td>
+            <td><a href='/batch_flow_state?utf8=%E2%9C%93&batch_details_filter%5Bbatch%5D='+"<%= @batches.where(:product_id => pd.id).last  %>"+'&commit=Filter'><%= @batches.where(:product_id => pd.id).count %></a></td>
           </tr>
           <% end %>
         </table>
