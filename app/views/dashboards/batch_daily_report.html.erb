@@ -45,8 +45,8 @@
 
 
         <h3>Actual for <%= @today %></h3>
-        <%=
-          Batch.where(:id => BatchLog.where("timestamp > ? AND timestamp <= ? ",Time.now.beginning_of_day,Time.now.end_of_day).pluck(:batch_id).compact.uniq) 
+        <%
+          @batches = Batch.where(:id => BatchLog.where("timestamp > ? AND timestamp <= ? ",Time.now.beginning_of_day,Time.now.end_of_day).pluck(:batch_id).compact.uniq)
 
         %>
         <table class="table table-responsive table-bordered">
@@ -54,10 +54,10 @@
             <th>Product</th>
             <th>No. Of Batches</th>
           </tr>
-          <% plan_details.each do |pd| %>
+          <% Product.where(:id => @batches.pluck(:product_id).uniq).each do |pd| %>
           <tr>
-            <td><%= pd[:product] %></td>
-            <td><%= pd[:no_of_batches] %></td>
+            <td><%= pd.name %></td>
+            <td><%= @batches.where(:product_id => pd.id).count %></td>
           </tr>
           <% end %>
         </table>
