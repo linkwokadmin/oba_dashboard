@@ -44,6 +44,28 @@
         </table>
 
 
+        <h3>Actual for <%= @today %></h3>
+        <%-
+          BatchLog.where(:start_time)
+
+        %>
+        <table class="table table-responsive table-bordered">
+          <tr>
+            <th>Product</th>
+            <th>No. Of Batches</th>
+          </tr>
+          <% plan_details.each do |pd| %>
+          <tr>
+            <td><%= pd[:product] %></td>
+            <td><%= pd[:no_of_batches] %></td>
+          </tr>
+          <% end %>
+        </table>
+
+
+
+
+
 
 
       </div>
