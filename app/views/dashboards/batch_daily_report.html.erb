@@ -28,7 +28,7 @@
             prd = products.select { |p| p["id"]== bp["product_id"]}
             plan_details << {product: prd[0]["name"],no_of_batches: bp["number_of_batches"] }
           end
-
+          ActiveRecord::Base.establish_connection(:production)
         %>
         <table class="table table-responsive table-bordered">
           <tr>
