@@ -30,7 +30,6 @@
           end
 
         %>
-        <%= plan_details %>
         <table class="table table-responsive table-bordered">
           <tr>
             <th>Product</th>
@@ -38,8 +37,8 @@
           </tr>
           <% plan_details.each do |pd| %>
           <tr>
-            <td><%= pd['product'] %></td>
-            <td><%= pd['no_of_batches'] %></td>
+            <td><%= pd[:product] %></td>
+            <td><%= pd[:no_of_batches] %></td>
           </tr>
           <% end %>
         </table>
