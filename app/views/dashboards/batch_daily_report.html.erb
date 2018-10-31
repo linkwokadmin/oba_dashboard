@@ -46,7 +46,7 @@
 
         <h3>Actual for <%= @today %></h3>
         <%
-          @batches = Batch.where(:id => BatchLog.where("timestamp > ? AND timestamp <= ? ",(Time.now - 1.days).beginning_of_day,(Time.now - 1.days).end_of_day).pluck(:batch_id).compact.uniq)
+          @batches = Batch.where(:id => BatchLog.where("timestamp > ? AND timestamp <= ? ",(Date.today - 1.days).beginning_of_day,(Date.today - 1.days).end_of_day).pluck(:batch_id).compact.uniq)
 
         %>
         <table class="table table-responsive table-bordered">
