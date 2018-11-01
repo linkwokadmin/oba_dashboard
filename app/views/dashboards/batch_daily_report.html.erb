@@ -62,7 +62,7 @@
             <td>
               <ul>
               <% @batches.where(:product_id => pd.id).each do |b| %>
-                <li><%= link_to b.name,"/batch_flow_state?utf8=%E2%9C%93&batch_details_filter%5Bbatch%5D=#{b.id}&commit=Filter",:target => "_blank" %></li>
+                <li><%= link_to b.name,"/dashboards/batch_flow_state?utf8=%E2%9C%93&batch_details_filter%5Bbatch%5D=#{b.id}&commit=Filter",:target => "_blank" %></li>
               <% end %>
               </ul>
             </td>
