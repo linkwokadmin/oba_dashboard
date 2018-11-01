@@ -53,11 +53,20 @@
           <tr>
             <th>Product</th>
             <th>No. Of Batches</th>
+            <th>Batch Details and Stats</th>
           </tr>
           <% Product.where(:id => @batches.pluck(:product_id).uniq).each do |pd| %>
           <tr>
             <td><%= pd.name %></td>
-            <td><a href='/batch_flow_state?utf8=%E2%9C%93&batch_details_filter%5Bbatch%5D='+"<%= @batches.where(:product_id => pd.id).last  %>"+'&commit=Filter'><%= @batches.where(:product_id => pd.id).count %></a></td>
+            <td><%= @batches.where(:product_id => pd.id).count %></td>
+            <td>
+              <ul>
+              <% @batches.where(:product_id => pd.id).each do |b| %>
+                <li><%= link_to b.name,"/batch_flow_state?utf8=%E2%9C%93&batch_details_filter%5Bbatch%5D=#{b.id}&commit=Filter",:target => "_blank" %></li>
+              <% end %>
+              </ul>
+            </td>
+
           </tr>
           <% end %>
         </table>
