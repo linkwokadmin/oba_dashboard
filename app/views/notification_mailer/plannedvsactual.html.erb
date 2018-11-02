@@ -8,7 +8,7 @@
       <div class="panel-heading">
         <div class="panel-title">
 
-            Daily Report - Planned vs Actual
+          Daily Report - Planned vs Actual
 
         </div>
         <div class="panel-tools">
@@ -21,7 +21,7 @@
         <h3>Planned for <%= @today %></h3>
         <%-
           production_planner = ActiveRecord::Base.establish_connection(:production_planner).connection
-          batch_plans = production_planner.execute("SELECT * FROM batch_plans WHERE for_date > '2018-10-29' AND for_date < '2018-10-30' AND plan_type='actual'").to_a
+          batch_plans = production_planner.execute("SELECT * FROM batch_plans WHERE for_date > '#{(@today -1.days).to_s}' AND for_date < '#{@today.to_s}' AND plan_type='actual'").to_a
           products = production_planner.execute("SELECT * FROM products").to_a
           plan_details = []
           batch_plans.each do |bp|
@@ -36,17 +36,17 @@
             <th>No. Of Batches</th>
           </tr>
           <% plan_details.each do |pd| %>
-          <tr>
-            <td><%= pd[:product] %></td>
-            <td><%= pd[:no_of_batches] %></td>
-          </tr>
+            <tr>
+              <td><%= pd[:product] %></td>
+              <td><%= pd[:no_of_batches] %></td>
+            </tr>
           <% end %>
         </table>
 
 
         <h3>Actual for <%= @today %></h3>
         <%
-          @batches = Batch.where(:id => BatchLog.where("timestamp > ? AND timestamp <= ? ",(Date.today - 1.days).beginning_of_day,(Date.today - 1.days).end_of_day).pluck(:batch_id).compact.uniq)
+          @batches = Batch.where(:id => BatchLog.where("timestamp > ? AND timestamp <= ? ",(@today - 1.days).beginning_of_day,(@today - 1.days).end_of_day).pluck(:batch_id).compact.uniq)
 
         %>
         <table class="table table-responsive table-bordered">
@@ -56,18 +56,18 @@
             <th>Batch Details and Stats</th>
           </tr>
           <% Product.where(:id => @batches.pluck(:product_id).uniq).each do |pd| %>
-          <tr>
-            <td><%= pd.name %></td>
-            <td><%= @batches.where(:product_id => pd.id).count %></td>
-            <td>
-              <ul>
-              <% @batches.where(:product_id => pd.id).each do |b| %>
-                <li><%= link_to b.name,"/batch_flow_state?utf8=%E2%9C%93&batch_details_filter%5Bbatch%5D=#{b.id}&commit=Filter",:target => "_blank" %></li>
-              <% end %>
-              </ul>
-            </td>
+            <tr>
+              <td><%= pd.name %></td>
+              <td><%= @batches.where(:product_id => pd.id).count %></td>
+              <td>
+                <ul>
+                  <% @batches.where(:product_id => pd.id).each do |b| %>
+                    <li><%= link_to b.name,"/batch_flow_state?utf8=%E2%9C%93&batch_details_filter%5Bbatch%5D=#{b.id}&commit=Filter",:target => "_blank" %></li>
+                  <% end %>
+                </ul>
+              </td>
 
-          </tr>
+            </tr>
           <% end %>
         </table>
 
