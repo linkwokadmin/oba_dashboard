@@ -103,7 +103,7 @@
                             <tr>
                                 <td><%= index + 1 %></td>
                                 <td><%= Product.find(p[0]).name %></td>
-                                <td><%= p[1] %></td>
+                                <td><%= p[2] %></td>
                               <% Stage.all.each do |s| %>
                               <td><%= (p[1][s.id]/3600.0).round(2) %></td>
                                 <% end %>
