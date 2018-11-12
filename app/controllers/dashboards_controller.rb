@@ -4,11 +4,11 @@ class DashboardsController < ApplicationController
 
     def index
         if params[:stream_status_filter].present?
-            @from_date = Date.strptime(params[:stream_status_filter][:from_date], '%d/%m/%Y').beginning_of_day
-            @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y').end_of_day
-            @stream = Stream.find_by name: params[:stream_status_filter][:stream]
-            @stage = Stage.find_by name: params[:stream_status_filter][:stage]
+
             if params[:stream_status_filter][:all_stages] == "yes"
+                @from_date = Date.strptime(params[:stream_report_filter][:from_date], '%d/%m/%Y').beginning_of_day
+                @to_date = Date.strptime(params[:stream_report_filter][:to_date], '%d/%m/%Y').end_of_day
+                @stream = Stream.find_by name: params[:stream_report_filter][:stream]
                 # @stage = Stage.all
                 batches = Batch.where(id: BatchLog.where(stream: @stream).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
                 @product_data = []
@@ -42,6 +42,10 @@ class DashboardsController < ApplicationController
                 end
             else
 
+                @from_date = Date.strptime(params[:stream_status_filter][:from_date], '%d/%m/%Y').beginning_of_day
+                @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y').end_of_day
+                @stream = Stream.find_by name: params[:stream_status_filter][:stream]
+                @stage = Stage.find_by name: params[:stream_status_filter][:stage]
             @stream_statuses = []
             total_delay = 0
             count = 0
