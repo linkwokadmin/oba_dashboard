@@ -23,7 +23,7 @@ class DashboardsController < ApplicationController
                         batch_end_time = batch_logs.last.timestamp
 
                         if batch_end_time >= @from_date && batch_end_time <= @to_date #&& batch_end_time != (batch_end_time.to_date + 6.hours + 55.minutes)
-                            bct_plan = batch.product.master_bmrs.where(stage: @stage).first.bct
+                            bct_plan = batch.product.master_bmrs.where(stage: s).first.bct
                             bct_actual = batch_end_time - batch_start_time
                             delay = bct_actual - bct_plan
                             total_delay += ((delay > 0) ? delay : 0)
