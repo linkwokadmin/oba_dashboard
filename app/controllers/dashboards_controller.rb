@@ -58,6 +58,7 @@ class DashboardsController < ApplicationController
                 @product_batch_delay_data = {}
 
                 batches.keys.compact.each do |b|
+                    @product_batch_delay_data[b] = []
                     stage_delay = {}
 
                     Stage.all.each do |s|
