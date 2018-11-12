@@ -58,10 +58,11 @@ class DashboardsController < ApplicationController
                 @product_batch_delay_data = {}
 
                 batches.keys.compact.each do |b|
-                    @product_batch_delay_data[b] = []
+                    @product_batch_delay_data[b] = {}
                     stage_delay = {}
 
                     Stage.all.each do |s|
+                        @product_batch_delay_data[b][s.id] = []
                         total_delay = 0
                     batches[b].each do |batch|
                         batch_logs = batch.batch_logs.where(stage: s).order(timestamp: :asc)
