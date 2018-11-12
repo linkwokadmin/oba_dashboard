@@ -51,13 +51,14 @@
                     </thead>
                     <tbody>
                     <% if @product_data.present? %>
-                        <% @product_data.each_with_index do |stream_status, index| %>
+                        <% @product_data.each_with_index do |p, index| %>
                             <tr>
                                 <td><%= index + 1 %></td>
-                                <td><%= stream_status[:stage] %></td>
-                                <td><%= stream_status[:batch] %></td>
-                                <td><%= stream_status[:on_date] %></td>
-                                <td class="<%= delay_view_class_for(stream_status[:delay]) %>"><%= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>
+                                <td><%= p %></td>
+                              <% Stage.all.each do |s| %>
+                              <td><%= p[s.id] %></td>
+                                <% end %>
+<!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
                             </tr>
                         <% end %>
                     <% end %>

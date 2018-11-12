@@ -9,12 +9,40 @@ class DashboardsController < ApplicationController
             @stream = Stream.find_by name: params[:stream_status_filter][:stream]
             @stage = Stage.find_by name: params[:stream_status_filter][:stage]
             if params[:stream_status_filter][:all_stages]
-                @stage = Stage.all
+                # @stage = Stage.all
+                batches = Batch.where(id: BatchLog.where(stream: @stream).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
+                @product_data = []
+
+                batches.keys.each do |b|
+                    stage_delay = {}
+                    total_delay = 0
+                    Stage.all.each do |s|
+                    batches[b].select{|x| x.stage_id == s.id}.each do |batch|
+                        batch_logs = batch.batch_logs.where(stream: @stream, stage: @stage).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
+                        batch_start_time = batch_logs.first.timestamp
+                        batch_end_time = batch_logs.last.timestamp
+
+                        if batch_end_time >= @from_date && batch_end_time <= @to_date #&& batch_end_time != (batch_end_time.to_date + 6.hours + 55.minutes)
+                            bct_plan = batch.product.master_bmrs.where(stage: @stage).first.bct
+                            bct_actual = batch_end_time - batch_start_time
+                            delay = bct_actual - bct_plan
+                            total_delay += ((delay > 0) ? delay : 0)
+
+
+
+                        end
+                        stage_delay[s.id] = total_delay
+                        end
+                        end
+
+                    @product_data << [b,stage_delay]
+                end
             end
 
             @stream_statuses = []
             total_delay = 0
             count = 0
+
 
             batches = Batch.where(id: BatchLog.where(stream: @stream, stage: @stage).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq)
             batches.each do |batch|
