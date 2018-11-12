@@ -3,6 +3,10 @@ class DashboardsController < ApplicationController
     skip_before_action :verify_authenticity_token, only: %i[reactor_attribute_data]
 
     def index
+        @to_date = Date.today
+        @from_date = @to_date - 1.day
+        @stream = Stream.find_by name: Stream::STREAM_1
+        @stage = Stage.find_by name: Stage::STAGE_CC
         if true
 
             if params[:stream_report_filter].present?
@@ -133,11 +137,7 @@ class DashboardsController < ApplicationController
 
 
 
-        else
-            @to_date = Date.today
-            @from_date = @to_date - 1.day
-            @stream = Stream.find_by name: Stream::STREAM_1
-            @stage = Stage.find_by name: Stage::STAGE_CC
+
         end
 
     end
