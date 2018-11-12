@@ -15,8 +15,9 @@ class DashboardsController < ApplicationController
 
                 batches.keys.each do |b|
                     stage_delay = {}
-                    total_delay = 0
+
                     Stage.all.each do |s|
+                        total_delay = 0
                     batches[b].each do |batch|
                         batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
                         batch_start_time = batch_logs.first.timestamp rescue 0
@@ -31,9 +32,10 @@ class DashboardsController < ApplicationController
 
                         end
                         end
+                    end
                         stage_delay[s.id] = total_delay / batches[b].count
-                        end
-                        end
+
+                    end
 
                     @product_data << [b,stage_delay]
                 end
