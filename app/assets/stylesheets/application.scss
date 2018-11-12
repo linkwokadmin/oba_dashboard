@@ -12,7 +12,8 @@
  *
  *= require vendor
  *= require controllers
-  *= require_self
+ *= require_self
+
  */
 
 * {
@@ -52,3 +53,5 @@ html, body {
         max-width: 70em !important;
     }
 }
+@import "bootstrap-sprockets";
+@import "bootstrap";

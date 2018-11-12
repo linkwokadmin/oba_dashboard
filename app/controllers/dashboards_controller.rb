@@ -8,7 +8,7 @@ class DashboardsController < ApplicationController
             @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y').end_of_day
             @stream = Stream.find_by name: params[:stream_status_filter][:stream]
             @stage = Stage.find_by name: params[:stream_status_filter][:stage]
-            if params[:stream_status_filter][:all_stages]
+            if params[:stream_status_filter][:all_stages] == "yes"
                 # @stage = Stage.all
                 batches = Batch.where(id: BatchLog.where(stream: @stream).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
                 @product_data = []
