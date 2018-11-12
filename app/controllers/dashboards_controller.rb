@@ -66,7 +66,7 @@ class DashboardsController < ApplicationController
                         # batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
                         batch_start_time = batch_logs.first.timestamp rescue 0
                         batch_end_time = batch_logs.last.timestamp rescue 0
-                        if batch_start_time !=0 and batch_end_time !=0
+                        if batch_start_time !=0 and batch_end_time !=0 and batch.product.present?
                         if batch_end_time >= @from_date && batch_end_time <= @to_date #&& batch_end_time != (batch_end_time.to_date + 6.hours + 55.minutes)
                             bct_plan = batch.product.master_bmrs.where(stage: s).first.bct
                             bct_actual = batch_end_time - batch_start_time
