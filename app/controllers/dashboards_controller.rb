@@ -3,9 +3,9 @@ class DashboardsController < ApplicationController
     skip_before_action :verify_authenticity_token, only: %i[reactor_attribute_data]
 
     def index
-        if params[:stream_report_filter].present?
+        if true
 
-            if true
+            if params[:stream_report_filter].present?
             # if params[:stream_status_filter][:all_stages] == "yes"
                 @from_date = Date.strptime(params[:stream_report_filter][:from_date], '%d/%m/%Y').beginning_of_day
                 @to_date = Date.strptime(params[:stream_report_filter][:to_date], '%d/%m/%Y').end_of_day
