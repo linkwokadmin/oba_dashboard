@@ -41,7 +41,50 @@ class DashboardsController < ApplicationController
 
                     @product_data << [b,stage_delay]
                 end
-            else
+            end
+
+
+
+            if params[:product_report_filter].present?
+            # if params[:stream_status_filter][:all_stages] == "yes"
+                @from_date = Date.strptime(params[:product_report_filter][:from_date], '%d/%m/%Y').beginning_of_day
+                @to_date = Date.strptime(params[:product_report_filter][:to_date], '%d/%m/%Y').end_of_day
+                batches = Batch.where(id: BatchLog.where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
+                @product_data = []
+
+                batches.keys.each do |b|
+                    stage_delay = {}
+
+                    Stage.all.each do |s|
+                        total_delay = 0
+                    batches[b].each do |batch|
+                        batch_logs = batch.batch_logs.where(stage: s).order(timestamp: :asc)
+                        # batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
+                        batch_start_time = batch_logs.first.timestamp rescue 0
+                        batch_end_time = batch_logs.last.timestamp rescue 0
+                        if batch_start_time !=0 and batch_end_time !=0
+                        if batch_end_time >= @from_date && batch_end_time <= @to_date #&& batch_end_time != (batch_end_time.to_date + 6.hours + 55.minutes)
+                            bct_plan = batch.product.master_bmrs.where(stage: s).first.bct
+                            bct_actual = batch_end_time - batch_start_time
+                            delay = bct_actual - bct_plan
+                            total_delay += ((delay > 0) ? delay : 0)
+
+
+                        end
+                        end
+                    end
+                        stage_delay[s.id] = total_delay / batches[b].count
+
+                    end
+
+                    @product_data << [b,stage_delay,batches[b].count]
+                end
+            end
+
+
+
+
+            if  params[:stream_status_filter].present?
 
                 @from_date = Date.strptime(params[:stream_status_filter][:from_date], '%d/%m/%Y').beginning_of_day
                 @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y').end_of_day
@@ -85,6 +128,10 @@ class DashboardsController < ApplicationController
             @average_delay = ((count > 0) ? (total_delay / count) : nil)
 
             end
+
+
+
+
 
         else
             @to_date = Date.today
