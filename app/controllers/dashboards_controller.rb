@@ -74,9 +74,10 @@ class DashboardsController < ApplicationController
                     }
                 end
             end
+            @average_delay = ((count > 0) ? (total_delay / count) : nil)
+
             end
 
-            @average_delay = ((count > 0) ? (total_delay / count) : nil)
         else
             @to_date = Date.today
             @from_date = @to_date - 1.day
