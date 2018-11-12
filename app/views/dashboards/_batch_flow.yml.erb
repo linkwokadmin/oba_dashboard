@@ -9,7 +9,7 @@
 
 graph LR
     <% while master_bmr.present? %>
-    subgraph <%= master_bmr.stage.name.titleize %>
+    subgraph <%= master_bmr.stage.name.titleize + "<br> (BCT: " + master_bmr.bct + ")"%>
         <% master_bmr.stage.reactors.includes(:stream_reactors).where(stream_reactors: {stream: stream}).each do |reactor| %>
         <%-
             batch_logs = batch.batch_logs.where(reactor: reactor).order(timestamp: :asc)
