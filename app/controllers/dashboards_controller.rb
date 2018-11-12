@@ -56,7 +56,7 @@ class DashboardsController < ApplicationController
                 batches = Batch.where(id: BatchLog.where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
                 @product_data = []
 
-                batches.keys.each do |b|
+                batches.keys.compact.each do |b|
                     stage_delay = {}
 
                     Stage.all.each do |s|
