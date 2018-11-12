@@ -8,6 +8,9 @@ class DashboardsController < ApplicationController
             @to_date = Date.strptime(params[:stream_status_filter][:to_date], '%d/%m/%Y').end_of_day
             @stream = Stream.find_by name: params[:stream_status_filter][:stream]
             @stage = Stage.find_by name: params[:stream_status_filter][:stage]
+            if params[:stream_status_filter][:all_stages]
+                @stage = Stage.all
+            end
 
             @stream_statuses = []
             total_delay = 0

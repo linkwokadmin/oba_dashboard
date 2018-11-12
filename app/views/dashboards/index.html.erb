@@ -2,6 +2,75 @@
     <h2 class="page-title">Dashboard</h2>
 </div>
 
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default-light rounded">
+            <div class="panel-heading">
+                <div class="panel-title">Stream wise Report</div>
+                <div class="panel-tools">
+                    <%= simple_form_for :stream_status_filter, url: :root, method: :get, html: {class: 'form-inline'} do |f| %>
+                        <%= f.input :from_date, as: :hidden, label: false, wrapper: false %>
+                        <%= f.input :to_date, as: :hidden, label: false, wrapper: false %>
+                        <%= f.input :stream, collection: Stream::STREAMS, selected: @stream.name, include_blank: false, label: false, wrapper: false, input_html: {class: 'default-select2 input-sm rounded m-right-5'} %>
+                        <%= f.input :all_stages, as: :hidden,label: false, wrapper: false  %>
+                        <div id="stream-status-daterange" class="btn btn-sm btn-default-outline rounded m-right-5">
+                            <i class="fa fa-calendar m-right-5"></i>
+                            <span></span>
+                            <i class="fa fa-angle-down m-left-5"></i>
+                        </div>
+                        <%= f.submit 'Filter', class: 'btn btn-success btn-sm rounded rippler', data: {disable_with: 'Processing...'} %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="pull-right">
+                    <table class="table-condensed table-hover">
+                        <tbody>
+                        <tr>
+                            <td>Average Delay:</td>
+                            <th class="<%= delay_view_class_for(@average_delay) %>"><%= distance_of_time_in_words(@average_delay) rescue '' %></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <table class="table table-condensed table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <% Stage.all.each do |s| %>
+                        <th><%= s.name %></th>
+                        <% end %>
+                      <% end %>
+                        <th>Delay</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if @product_data.present? %>
+                        <% @product_data.each_with_index do |stream_status, index| %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= stream_status[:stage] %></td>
+                                <td><%= stream_status[:batch] %></td>
+                                <td><%= stream_status[:on_date] %></td>
+                                <td class="<%= delay_view_class_for(stream_status[:delay]) %>"><%= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default-light rounded">
@@ -63,6 +132,10 @@
         </div>
     </div>
 </div>
+
+
+
+
 
 <div class="row">
     <div class="col-md-12">
