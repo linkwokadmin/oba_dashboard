@@ -61,14 +61,14 @@
 
                 <% if @batch.present? %>
                 <div class="caption">
-                              <h3>Batch Statistics</h3>
+                              <h3>Batch Statistics from <%= 30.days.ago.to_date.to_s(:long) %> to <%= Date.today.to_s(:long) %></h3>
                 </div>
                 <table class="table table-condensed table-bordered table-hover rounded">
                     <thead>
                     <tr>
                       <th> </th>
                       <% Stage::STAGES.each do |s| %>
-                        <th><%=s%></th>
+                        <th><%=s%> (Avg. Delay)</th>
                       <% end %>
                     </tr>
                     </thead>
