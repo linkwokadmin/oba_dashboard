@@ -9,7 +9,7 @@
     <div class="col-md-12">
         <div class="panel panel-default-light rounded">
             <div class="panel-heading">
-                <div class="panel-title">Stream wise Report</div>
+                <div class="panel-title">Stream wise Report - Average delay</div>
                 <div class="panel-tools">
                     <%= simple_form_for :stream_status_filter, url: :root, method: :get, html: {class: 'form-inline'} do |f| %>
                         <%= f.input :from_date, as: :hidden, label: false, wrapper: false %>
@@ -46,7 +46,7 @@
                         <% Stage.all.each do |s| %>
                         <th><%= s.name %></th>
                         <% end %>
-                        <th>Delay</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -54,7 +54,7 @@
                         <% @product_data.each_with_index do |p, index| %>
                             <tr>
                                 <td><%= index + 1 %></td>
-                                <td><%= p[0] %></td>
+                                <td><%= Product.find(p[0]).name %></td>
                               <% Stage.all.each do |s| %>
                               <td><%= p[1][s.id]/3600.0 %></td>
                                 <% end %>
