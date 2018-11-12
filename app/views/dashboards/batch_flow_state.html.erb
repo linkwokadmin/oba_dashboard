@@ -61,7 +61,7 @@
 
                 <% if @batch.present? %>
                 <div class="caption">
-                              <h3>Batch Statistics from <%= 30.days.ago.to_date.to_s(:long) %> to <%= Date.today.to_s(:long) %></h3>
+                              <h3>Batch Statistics from <%= 30.days.ago.to_date.to_s(:long) %> to <%= Date.today.to_s(:long) %> for <%= @batch.product.name %></h3>
                 </div>
                 <table class="table table-condensed table-bordered table-hover rounded">
                     <thead>
