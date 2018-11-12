@@ -31,7 +31,7 @@ class DashboardsController < ApplicationController
 
                         end
                         end
-                        stage_delay[s.id] = total_delay
+                        stage_delay[s.id] = total_delay / batches[b].count
                         end
                         end
 
