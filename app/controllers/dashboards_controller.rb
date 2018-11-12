@@ -54,7 +54,8 @@ class DashboardsController < ApplicationController
                 @from_date = Date.strptime(params[:product_report_filter][:from_date], '%d/%m/%Y').beginning_of_day
                 @to_date = Date.strptime(params[:product_report_filter][:to_date], '%d/%m/%Y').end_of_day
                 batches = Batch.where(id: BatchLog.where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
-                @product_data = []
+                @product_wise_data = []
+                @product_batch_delay_data = {}
 
                 batches.keys.compact.each do |b|
                     stage_delay = {}
@@ -71,6 +72,7 @@ class DashboardsController < ApplicationController
                             bct_plan = batch.product.master_bmrs.where(stage: s).first.bct
                             bct_actual = batch_end_time - batch_start_time
                             delay = bct_actual - bct_plan
+                            @product_batch_delay_data[b] << delay
                             total_delay += ((delay > 0) ? delay : 0)
 
 
@@ -81,7 +83,7 @@ class DashboardsController < ApplicationController
 
                     end
 
-                    @product_data << [b,stage_delay,batches[b].count]
+                    @product_wise_data << [b,stage_delay,batches[b].count]
                 end
             end
 

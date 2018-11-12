@@ -98,8 +98,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% if @product_data.present? %>
-                        <% @product_data.each_with_index do |p, index| %>
+                    <% if @product_wise_data.present? %>
+                        <% @product_wise_data.each_with_index do |p, index| %>
                             <tr>
                                 <td><%= index + 1 %></td>
                                 <td><%= Product.find(p[0]).name %></td>
@@ -107,6 +107,7 @@
                               <% Stage.all.each do |s| %>
                               <td><%= (p[1][s.id]/3600.0).round(2) %></td>
                                 <% end %>
+                              <td><%= @product_batch_delay_data[p[0]] %></td>
 <!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
                             </tr>
                         <% end %>
