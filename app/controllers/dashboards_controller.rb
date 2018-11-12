@@ -17,8 +17,8 @@ class DashboardsController < ApplicationController
                     stage_delay = {}
                     total_delay = 0
                     Stage.all.each do |s|
-                    batches[b].select{|x| x.stage_id == s.id}.each do |batch|
-                        batch_logs = batch.batch_logs.where(stream: @stream, stage: @stage).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
+                    batches[b].each do |batch|
+                        batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
                         batch_start_time = batch_logs.first.timestamp
                         batch_end_time = batch_logs.last.timestamp
 
