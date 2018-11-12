@@ -29,7 +29,6 @@ class DashboardsController < ApplicationController
                             total_delay += ((delay > 0) ? delay : 0)
 
 
-
                         end
                         stage_delay[s.id] = total_delay
                         end
@@ -37,7 +36,7 @@ class DashboardsController < ApplicationController
 
                     @product_data << [b,stage_delay]
                 end
-            end
+            else
 
             @stream_statuses = []
             total_delay = 0
@@ -74,6 +73,7 @@ class DashboardsController < ApplicationController
                     }
                 end
             end
+            end
 
             @average_delay = ((count > 0) ? (total_delay / count) : nil)
         else
@@ -82,6 +82,7 @@ class DashboardsController < ApplicationController
             @stream = Stream.find_by name: Stream::STREAM_1
             @stage = Stage.find_by name: Stage::STAGE_CC
         end
+
     end
 
     def batch_flow
