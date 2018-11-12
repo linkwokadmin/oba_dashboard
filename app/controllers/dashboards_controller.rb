@@ -73,7 +73,7 @@ class DashboardsController < ApplicationController
                             bct_plan = batch.product.master_bmrs.where(stage: s).first.bct
                             bct_actual = batch_end_time - batch_start_time
                             delay = bct_actual - bct_plan
-                            @product_batch_delay_data[b] << delay
+                            @product_batch_delay_data[b][s.id] << delay
                             total_delay += ((delay > 0) ? delay : 0)
 
 

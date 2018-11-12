@@ -92,10 +92,23 @@
                         <th>Product</th>
                         <th>No of Batches</th>
                         <% Stage.all.each do |s| %>
-                        <th><%= s.name %></th>
+                        <th colspan="3"><%= s.name %></th>
                         <% end %>
 
                     </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>No of Batches</th>
+                        <% Stage.all.each do |s| %>
+                        <th>Min</th>
+                        <th>Avg</th>
+                        <th>Max</th>
+                        <% end %>
+
+                    </tr>
+
+
                     </thead>
                     <tbody>
                     <% if @product_wise_data.present? %>
@@ -105,9 +118,12 @@
                                 <td><%= Product.find(p[0]).name %></td>
                                 <td><%= p[2] %></td>
                               <% Stage.all.each do |s| %>
-                              <td><%= (p[1][s.id]/3600.0).round(2) %></td>
+<!--                              <td><%#= (p[1][s.id]/3600.0).round(2) %></td>-->
+                                <td><%= @product_batch_delay_data[p[0]][s.id].min  %></td>
+                                <td><%= @product_batch_delay_data[p[0]][s.id].reduce(:+).to_f / @product_batch_delay_data[p[0]][s.id].size %></td>
+                                <td><%= @product_batch_delay_data[p[0]][s.id].max %></td>
                                 <% end %>
-                              <td><%= @product_batch_delay_data[p[0]] %></td>
+
 <!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
                             </tr>
                         <% end %>
