@@ -31,6 +31,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    active_record_doctor (1.5.0)
+      activerecord (>= 4.2)
+      railties (>= 4.2)
     activejob (5.2.0)
       activesupport (= 5.2.0)
       globalid (>= 0.3.6)
@@ -54,8 +57,13 @@ GEM
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
+    autoprefixer-rails (9.3.1)
+      execjs
     bcrypt (3.1.12)
     bindex (0.5.0)
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.3)
     byebug (10.0.2)
     cancancan (2.2.0)
@@ -81,7 +89,7 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
-    devise (4.4.3)
+    devise (4.5.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 6.0)
@@ -102,8 +110,10 @@ GEM
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
-    i18n (1.0.1)
+    i18n (1.1.1)
       concurrent-ruby (~> 1.0)
+    immigrant (0.3.6)
+      activerecord (>= 3.0)
     io-like (0.3.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -131,7 +141,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -149,7 +159,7 @@ GEM
     multi_json (1.13.1)
     nested_form (0.3.2)
     nio4r (2.3.1)
-    nokogiri (1.8.3)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
     pg (1.0.0)
@@ -159,7 +169,7 @@ GEM
     rack-pjax (1.0.0)
       nokogiri (~> 1.5)
       rack (>= 1.1)
-    rack-test (1.0.0)
+    rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.0)
       actioncable (= 5.2.0)
@@ -280,7 +290,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_record_doctor
   bootsnap!
+  bootstrap-sass
   byebug
   cancancan (~> 2.0)
   capybara (>= 2.15, < 4.0)
@@ -290,6 +302,7 @@ DEPENDENCIES
   exception_notification
   figaro
   font-awesome-rails
+  immigrant
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   mini_racer
@@ -309,8 +322,5 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
 
-RUBY VERSION
-   ruby 2.4.1p111
-
 BUNDLED WITH
-   1.16.2
+   1.16.4
