@@ -97,9 +97,9 @@
 
                     </tr>
                     <tr>
-                        <th>#</th>
-                        <th>Product</th>
-                        <th>No of Batches</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                         <% Stage.all.each do |s| %>
                         <th>Min</th>
                         <th>Avg</th>
@@ -112,6 +112,7 @@
                     </thead>
                     <tbody>
                     <% if @product_wise_data.present? %>
+                    <%= @product_batch_delay_data %>
                         <% @product_wise_data.each_with_index do |p, index| %>
                             <tr>
                                 <td><%= index + 1 %></td>
