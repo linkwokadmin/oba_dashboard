@@ -56,13 +56,16 @@ class DashboardsController < ApplicationController
                 batches = Batch.where(id: BatchLog.where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
                 @product_wise_data = []
                 @product_batch_delay_data = {}
+                @test_data = {}
 
                 batches.keys.compact.each do |b|
                     @product_batch_delay_data[b] = {}
+                    @test_data[b] = {}
                     stage_delay = {}
 
                     Stage.all.each do |s|
                         @product_batch_delay_data[b][s.id] = []
+                        @test_data[b][s.id] = []
                         total_delay = 0
                     batches[b].each do |batch|
                         batch_logs = batch.batch_logs.where(stage: s).order(timestamp: :asc)
@@ -75,6 +78,7 @@ class DashboardsController < ApplicationController
                             bct_actual = batch_end_time - batch_start_time
                             delay = bct_actual - bct_plan
                             @product_batch_delay_data[b][s.id] << delay
+                            @product_batch_delay_data[b][s.id] << bct_actual
                             total_delay += ((delay > 0) ? delay : 0)
 
 
