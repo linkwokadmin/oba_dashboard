@@ -78,7 +78,7 @@ class DashboardsController < ApplicationController
                             bct_actual = batch_end_time - batch_start_time
                             delay = bct_actual - bct_plan
                             @product_batch_delay_data[b][s.id] << delay
-                            @product_batch_delay_data[b][s.id] << bct_actual
+                            @test_data[b][s.id] << bct_actual
                             total_delay += ((delay > 0) ? delay : 0)
 
 
