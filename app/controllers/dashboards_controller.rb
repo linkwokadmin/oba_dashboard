@@ -73,8 +73,13 @@ class DashboardsController < ApplicationController
                     batches[b].each do |batch|
                         if !@chart_data[batch.product_id].present?
                             @chart_data[batch.product_id] = {}
-                            @chart_data[batch.product_id][s.id] = []
+
                         end
+                        if !@chart_data[batch.product_id][s.id].present?
+                            @chart_data[batch.product_id][s.id] = []
+
+                        end
+
                         batch_logs = batch.batch_logs.where(stage: s).order(timestamp: :asc)
                         # batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
                         batch_start_time = batch_logs.first.timestamp rescue 0
