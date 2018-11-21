@@ -104,6 +104,7 @@
                         <th>Min</th>
                         <th>Avg</th>
                         <th>Max</th>
+                        <th>Chart</th>
                         <% end %>
 
                     </tr>
@@ -123,6 +124,7 @@
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].min / 3600).round(2) rescue "NA" %></td>
                                 <td><%= ((@product_batch_delay_data[p[0]][s.id].reduce(:+).to_f / @product_batch_delay_data[p[0]][s.id].size)/3600).round(2) rescue "NA" %></td>
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].max / 3600).round(2) rescue "NA" %></td>
+                                <td><a href="#" data-toggle="modal" data-target="chart-modal">View Chart</a></td>
                                 <% end %>
 
 <!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
@@ -246,6 +248,29 @@
             </div>
         </div>
     </div>
+</div>
+
+
+
+
+<div id="chart-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script>
