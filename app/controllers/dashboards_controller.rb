@@ -62,11 +62,12 @@ class DashboardsController < ApplicationController
                     @product_batch_delay_data[b] = {}
                     @test_data[b] = {}
                     stage_delay = {}
-
+                    batch_count = 0
                     Stage.all.each do |s|
                         @product_batch_delay_data[b][s.id] = []
                         @test_data[b][s.id] = []
                         total_delay = 0
+
                     batches[b].each do |batch|
                         batch_logs = batch.batch_logs.where(stage: s).order(timestamp: :asc)
                         # batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
@@ -79,6 +80,7 @@ class DashboardsController < ApplicationController
                             delay = bct_actual - bct_plan
                             if delay/3600 < 200
                                 @product_batch_delay_data[b][s.id] << delay
+                                batch_count++
                             end
                             @test_data[b][s.id] << bct_actual
                             total_delay += ((delay > 0) ? delay : 0)
@@ -87,11 +89,11 @@ class DashboardsController < ApplicationController
                         end
                         end
                     end
-                        stage_delay[s.id] = total_delay / batches[b].count
+                        stage_delay[s.id] = total_delay / batch_count
 
                     end
 
-                    @product_wise_data << [b,stage_delay,batches[b].count]
+                    @product_wise_data << [b,stage_delay,batch_count]
                 end
             end
 
