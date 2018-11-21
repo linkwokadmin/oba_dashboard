@@ -80,7 +80,7 @@ class DashboardsController < ApplicationController
                             delay = bct_actual - bct_plan
                             if delay/3600 < 200
                                 @product_batch_delay_data[b][s.id] << delay
-                                batch_count++
+                                batch_count = batch_count + 1
                             end
                             @test_data[b][s.id] << bct_actual
                             total_delay += ((delay > 0) ? delay : 0)
