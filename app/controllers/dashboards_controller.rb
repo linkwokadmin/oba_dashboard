@@ -95,7 +95,7 @@ class DashboardsController < ApplicationController
 
                             end
                             @test_data[b][s.id] << bct_actual
-                            @chart_data[batch.product_id][s.id] << {x:bct_actual,y: @chart_data[batch.product_id][s.id].length}
+                            @chart_data[batch.product_id][s.id] << {y:bct_actual,x: @chart_data[batch.product_id][s.id].length}
 
 
 
