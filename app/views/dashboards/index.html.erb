@@ -124,7 +124,7 @@
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].min / 3600).round(2) rescue "NA" %></td>
                                 <td><%= ((@product_batch_delay_data[p[0]][s.id].reduce(:+).to_f / @product_batch_delay_data[p[0]][s.id].size)/3600).round(2) rescue "NA" %></td>
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].max / 3600).round(2) rescue "NA" %></td>
-                                <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>',3,3)">View Chart</a></td>
+                                <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>','<%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %>',3)">View Chart</a></td>
                                 <% end %>
 
 <!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
@@ -367,7 +367,7 @@
 
         var sop_bct = [];
         JSON.parse(d).forEach(function(data){
-            sop_bct.push({x:data.x,y:sop})
+            sop_bct.push({x:data.x,y:parseInt(sop)})
         });
 
         var scatterChart = new Chart($('#scatter-plot-chart')[0].getContext('2d'), {
@@ -379,7 +379,10 @@
                 },
                     {
                         label: 'SOP BCT in hrs',
-                        data: sop_bct
+                        data: sop_bct,
+                        showLine: true,
+                        borderColor: 'green',
+                        borderWidth: 2
                     },
 
 
