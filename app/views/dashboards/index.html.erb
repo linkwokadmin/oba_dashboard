@@ -263,7 +263,7 @@
         <h4 class="modal-title">Modal Header</h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <div class="scatter-plot-holder"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -360,4 +360,36 @@
 
         $('#average-attribute-value-holder').empty().append(event.detail[0].average_value);
     });
+
+
+    function initScatterChart(){
+        $('#scatter-plot-holder').empty().append('<canvas id="scatter-plot-chart"></canvas>');
+
+        var scatterChart = new Chart($('#scatter-plot-chart')[0].getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Scatter Dataset',
+                    data: [{
+                        x: -10,
+                        y: 0
+                    }, {
+                        x: 0,
+                        y: 10
+                    }, {
+                        x: 10,
+                        y: 5
+                    }]
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
+            }
+        });
+    }
 </script>
