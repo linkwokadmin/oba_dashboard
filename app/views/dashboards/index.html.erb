@@ -124,7 +124,7 @@
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].min / 3600).round(2) rescue "NA" %></td>
                                 <td><%= ((@product_batch_delay_data[p[0]][s.id].reduce(:+).to_f / @product_batch_delay_data[p[0]][s.id].size)/3600).round(2) rescue "NA" %></td>
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].max / 3600).round(2) rescue "NA" %></td>
-                                <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>')">View Chart</a></td>
+                                <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>',3,3)">View Chart</a></td>
                                 <% end %>
 
 <!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
@@ -362,8 +362,13 @@
     });
 
 
-    function initScatterChart(d){
+    function initScatterChart(d,sop,avg){
         $('#scatter-plot-holder').empty().append('<canvas id="scatter-plot-chart"></canvas>');
+
+        var sop_bct = [];
+        JSON.parse(d).forEach(function(data){
+            sop_bct.push({x:data.x,y:sop})
+        });
 
         var scatterChart = new Chart($('#scatter-plot-chart')[0].getContext('2d'), {
             type: 'scatter',
@@ -371,7 +376,14 @@
                 datasets: [{
                     label: 'Batch BCTs in hrs',
                     data: JSON.parse(d)
-                }]
+                },
+                    {
+                        label: 'SOP BCT in hrs',
+                        data: sop_bct
+                    },
+
+
+                ]
             },
             options: {
                 scales: {
