@@ -57,6 +57,7 @@ class DashboardsController < ApplicationController
                 @product_wise_data = []
                 @product_batch_delay_data = {}
                 @test_data = {}
+                @chart_data ={}
 
                 batches.keys.compact.each do |b|
                     @product_batch_delay_data[b] = {}
@@ -66,9 +67,14 @@ class DashboardsController < ApplicationController
                     Stage.all.each do |s|
                         @product_batch_delay_data[b][s.id] = []
                         @test_data[b][s.id] = []
+
                         total_delay = 0
-                        batch_count = 0
+
                     batches[b].each do |batch|
+                        if !@chart_data[batch.product_id].present?
+                            @chart_data[batch.product_id] = {}
+                            @chart_data[batch.product_id][s.id] = []
+                        end
                         batch_logs = batch.batch_logs.where(stage: s).order(timestamp: :asc)
                         # batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
                         batch_start_time = batch_logs.first.timestamp rescue 0
@@ -84,6 +90,7 @@ class DashboardsController < ApplicationController
 
                             end
                             @test_data[b][s.id] << bct_actual
+                            @chart_data[batch.product_id][s.id] << {x:bct_actual,y: @chart_data[batch.product_id][s.id]}
 
 
 
