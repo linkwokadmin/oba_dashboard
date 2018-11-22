@@ -111,6 +111,68 @@ class DashboardsController < ApplicationController
             end
 
 
+            if params[:product_report_filter_bct].present?
+            # if params[:stream_status_filter][:all_stages] == "yes"
+                @from_date = Date.strptime(params[:product_report_filter_bct][:from_date], '%d/%m/%Y').beginning_of_day
+                @to_date = Date.strptime(params[:product_report_filter_bct][:to_date], '%d/%m/%Y').end_of_day
+                batches = Batch.where(id: BatchLog.where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).pluck(:batch_id).uniq).group_by &:product_id
+                @product_wise_data_bct = []
+                @product_batch_delay_data = {}
+                @test_data = {}
+                @chart_data ={}
+
+                batches.keys.compact.each do |b|
+                    @product_batch_delay_data[b] = {}
+                    @test_data[b] = {}
+                    stage_delay = {}
+
+                    Stage.all.each do |s|
+                        @product_batch_delay_data[b][s.id] = []
+                        @test_data[b][s.id] = []
+
+                        total_delay = 0
+
+                    batches[b].each do |batch|
+                        if !@chart_data[batch.product_id].present?
+                            @chart_data[batch.product_id] = {}
+
+                        end
+                        if !@chart_data[batch.product_id][s.id].present?
+                            @chart_data[batch.product_id][s.id] = []
+
+                        end
+
+                        batch_logs = batch.batch_logs.where(stage: s).order(timestamp: :asc)
+                        # batch_logs = batch.batch_logs.where(stream: @stream, stage: s).where('timestamp >= ? AND timestamp <= ?', @from_date, @to_date).order(timestamp: :asc)
+                        batch_start_time = batch_logs.first.timestamp rescue 0
+                        batch_end_time = batch_logs.last.timestamp rescue 0
+                        if batch_start_time !=0 and batch_end_time !=0 and batch.product.present?
+                        if batch_end_time >= @from_date && batch_end_time <= @to_date #&& batch_end_time != (batch_end_time.to_date + 6.hours + 55.minutes)
+                            bct_plan = batch.product.master_bmrs.where(stage: s).first.bct
+                            bct_actual = batch_end_time - batch_start_time
+                            delay = bct_actual - bct_plan
+                            if delay/3600 < 100
+                                @product_batch_delay_data[b][s.id] << delay
+                                total_delay += ((delay > 0) ? delay : 0)
+                                @chart_data[batch.product_id][s.id] << {y:bct_actual/3600,x: @chart_data[batch.product_id][s.id].length}
+                            end
+                            @test_data[b][s.id] << bct_actual
+
+
+
+
+                        end
+                        end
+                    end
+                        stage_delay[s.id] = total_delay / batches[b].count
+
+                    end
+
+                    @product_wise_data_bct << [b,stage_delay,batches[b].count]
+                end
+            end
+
+
 
 
             if  params[:stream_status_filter].present?
