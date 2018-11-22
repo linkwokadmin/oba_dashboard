@@ -92,7 +92,7 @@
                         <th>Product</th>
                         <th>No of Batches</th>
                         <% Stage.all.each do |s| %>
-                        <th colspan="4" class="text-center"><%= s.name %> (delay in hrs)</th>
+                        <th colspan="5" class="text-center"><%= s.name %> (delay in hrs)</th>
                         <% end %>
 
                     </tr>
@@ -104,6 +104,7 @@
                         <th>Min</th>
                         <th>Avg</th>
                         <th>Max</th>
+                        <th>SOP</th>
                         <th>Chart</th>
                         <% end %>
 
@@ -124,6 +125,7 @@
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].min / 3600).round(2) rescue "NA" %></td>
                                 <td><%= ((@product_batch_delay_data[p[0]][s.id].reduce(:+).to_f / @product_batch_delay_data[p[0]][s.id].size)/3600).round(2) rescue "NA" %></td>
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].max / 3600).round(2) rescue "NA" %></td>
+                                <td><%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %></td>
                                 <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>','<%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %>','<%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)/3600).round(2) %>')">View Chart</a></td>
                                 <% end %>
 
