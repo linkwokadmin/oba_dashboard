@@ -204,9 +204,9 @@
                                 <td><%= p[2] %></td>
                               <% Stage.all.each do |s| %>
 <!--                              <td><%#= (p[1][s.id]/3600.0).round(2) %></td>-->
-                                <td><%= (@chart_data[p[0]][s.id].min / 3600).round(2) rescue "NA" %></td>
-                                <td><%= ((@chart_data[p[0]][s.id].reduce(:+).to_f / @chart_data[p[0]][s.id].size)/3600).round(2) rescue "NA" %></td>
-                                <td><%= (@chart_data[p[0]][s.id].max / 3600).round(2) rescue "NA" %></td>
+                                <td><%= (@chart_data[p[0]][s.id].pluck(:y).min / 3600).round(2) rescue "NA" %></td>
+                                <td><%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)/3600).round(2) rescue "NA" %></td>
+                                <td><%= (@chart_data[p[0]][s.id].pluck(:y).max / 3600).round(2) rescue "NA" %></td>
                                 <td><%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %></td>
                                 <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>','<%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %>','<%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)/3600).round(2) %>')">View Chart</a></td>
                                 <% end %>
