@@ -148,6 +148,88 @@
     <div class="col-md-12">
         <div class="panel panel-default-light rounded">
             <div class="panel-heading">
+                <div class="panel-title">Product wise Report - Actual BCT Statistics</div>
+                <div class="panel-tools">
+                    <%= simple_form_for :product_report_filter_bct, url: :root, method: :get, html: {class: 'form-inline'} do |f| %>
+                        <%= f.input :from_date, as: :hidden, label: false, wrapper: false %>
+                        <%= f.input :to_date, as: :hidden, label: false, wrapper: false %>
+                        <%#= f.input :stream, collection: Stream::STREAMS, selected: @stream.name, include_blank: false, label: false, wrapper: false, input_html: {class: 'default-select2 input-sm rounded m-right-5'} %>
+                        <%= f.input :all_stages, as: :hidden,label: false, wrapper: false ,:input_html => {:value => "yes"} %>
+                        <div id="product-report-daterange" class="btn btn-sm btn-default-outline rounded m-right-5">
+                            <i class="fa fa-calendar m-right-5"></i>
+                            <span></span>
+                            <i class="fa fa-angle-down m-left-5"></i>
+                        </div>
+                        <%= f.submit 'Filter', class: 'btn btn-success btn-sm rounded rippler', data: {disable_with: 'Processing...'} %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="panel-body">
+
+                <table class="table table-condensed table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>No of Batches</th>
+                        <% Stage.all.each do |s| %>
+                        <th colspan="5" class="text-center"><%= s.name %> (delay in hrs)</th>
+                        <% end %>
+
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <% Stage.all.each do |s| %>
+                        <th>Min</th>
+                        <th>Avg</th>
+                        <th>Max</th>
+                        <th>SOP</th>
+                        <th>Chart</th>
+                        <% end %>
+
+                    </tr>
+
+
+                    </thead>
+                    <tbody>
+                    <% if @product_wise_data_bct.present? %>
+
+                        <% @product_wise_data_bct.each_with_index do |p, index| %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= Product.find(p[0]).name %></td>
+                                <td><%= p[2] %></td>
+                              <% Stage.all.each do |s| %>
+<!--                              <td><%#= (p[1][s.id]/3600.0).round(2) %></td>-->
+                                <td><%= (@chart_data[p[0]][s.id].min / 3600).round(2) rescue "NA" %></td>
+                                <td><%= ((@chart_data[p[0]][s.id].reduce(:+).to_f / @chart_data[p[0]][s.id].size)/3600).round(2) rescue "NA" %></td>
+                                <td><%= (@chart_data[p[0]][s.id].max / 3600).round(2) rescue "NA" %></td>
+                                <td><%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %></td>
+                                <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>','<%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %>','<%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)/3600).round(2) %>')">View Chart</a></td>
+                                <% end %>
+
+<!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
+                            </tr>
+                        <% end %>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default-light rounded">
+            <div class="panel-heading">
                 <div class="panel-title">Stream Status</div>
                 <div class="panel-tools">
                     <%= simple_form_for :stream_status_filter, url: :root, method: :get, html: {class: 'form-inline'} do |f| %>
