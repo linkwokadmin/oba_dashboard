@@ -207,8 +207,8 @@
                                 <td><%= (@chart_data[p[0]][s.id].pluck(:y).min ).round(2) rescue "NA" %></td>
                                 <td><%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)).round(2) rescue "NA" %></td>
                                 <td><%= (@chart_data[p[0]][s.id].pluck(:y).max ).round(2) rescue "NA" %></td>
-                                <td><%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct%></td>
-                                <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>','<%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct%>','<%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)).round(2) %>')">View Chart</a></td>
+                                <td><%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %></td>
+                                <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>','<%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %>','<%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)).round(2) %>')">View Chart</a></td>
                                 <% end %>
 
 <!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
