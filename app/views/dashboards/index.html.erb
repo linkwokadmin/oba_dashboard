@@ -155,7 +155,7 @@
                         <%= f.input :to_date, as: :hidden, label: false, wrapper: false %>
                         <%#= f.input :stream, collection: Stream::STREAMS, selected: @stream.name, include_blank: false, label: false, wrapper: false, input_html: {class: 'default-select2 input-sm rounded m-right-5'} %>
                         <%= f.input :all_stages, as: :hidden,label: false, wrapper: false ,:input_html => {:value => "yes"} %>
-                        <div id="product-report-daterange" class="btn btn-sm btn-default-outline rounded m-right-5">
+                        <div id="product-report-bct-daterange" class="btn btn-sm btn-default-outline rounded m-right-5">
                             <i class="fa fa-calendar m-right-5"></i>
                             <span></span>
                             <i class="fa fa-angle-down m-left-5"></i>
@@ -396,6 +396,7 @@
         initDateRangePicker($('#stream-status-daterange'), '<%= @from_date %>', '<%= @to_date %>', $('#stream_status_filter_from_date'), $('#stream_status_filter_to_date'));
         initDateRangePicker($('#stream-report-daterange'), '<%= @from_date %>', '<%= @to_date %>', $('#stream_report_filter_from_date'), $('#stream_report_filter_to_date'));
         initDateRangePicker($('#product-report-daterange'), '<%= @from_date %>', '<%= @to_date %>', $('#product_report_filter_from_date'), $('#product_report_filter_to_date'));
+        initDateRangePicker($('#product-report-bct-daterange'), '<%= @from_date %>', '<%= @to_date %>', $('#product_report_filter_bct_from_date'), $('#product_report_filter_bct_to_date'));
         initDateRangePicker($('#reactor-attribute-daterange'), moment(), moment(), $('#reactor_attribute_filter_from_date'), $('#reactor_attribute_filter_to_date'));
     });
 
