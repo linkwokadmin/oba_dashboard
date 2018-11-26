@@ -349,6 +349,7 @@
       </div>
       <div class="modal-body">
         <div id="scatter-plot-holder"></div>
+        <div id="bar-plot-holder"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -450,6 +451,7 @@
 
     function initScatterChart(d,sop,avg){
         $('#scatter-plot-holder').empty().append('<canvas id="scatter-plot-chart"></canvas>');
+        $('#bar-plot-holder').empty().append('<canvas id="bar-plot-chart"></canvas>');
 
         var sop_bct = [];
         JSON.parse(d).forEach(function(data){
@@ -468,7 +470,7 @@
           for(var e=0;e<_.max(_.pluck(s,'y'))+1;e = e+2)
         {
             counter = counter + 1
-           barData.push({x:counter,y: (_.compact(_.map(s,function(i){if(i.y > e && i.y <= e+2) return i.y }))).length})
+           barData.push({x:e+" - "+(e+2),y: (_.compact(_.map(s,function(i){if(i.y > e && i.y <= e+2) return i.y }))).length})
         }
 
 
@@ -516,34 +518,22 @@
             }
         });
 
-                var barChart = new Chart($('#scatter-plot-chart')[0].getContext('2d'), {
+                var barChart = new Chart($('#bar-plot-chart')[0].getContext('2d'), {
             type: 'bar',
             data: {
+                labels:_.pluck(barData,'x'),
                 datasets: [{
                     label: 'Batch BCT Frequency',
-                    data: barData,
-                    pointBackgroundColor:"#000"
-                },
+                    data: _.pluck(barData,'y')
+                }
 
 
 
                 ]
             },
-            options: {
-                scales: {
-                    xAxes: [{
-                        type: 'linear',
-                        position: 'bottom',
-                        labelString: "Batches"
-                    }],
-                    yAxes: [{
-                        type: 'linear',
+                    options: {
 
-                        labelString: "BCT in hrs"
-                    }],
-
-                }
-            }
+                    }
         });
 
 
