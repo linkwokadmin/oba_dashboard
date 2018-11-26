@@ -460,6 +460,19 @@
             avg_bct.push({x:data.x,y:parseInt(avg)})
         });
 
+
+        //compute data for bar chart
+        var s = JSON.parse(d);
+        var barData  = [];
+        var counter = 1;
+          for(var e=0;e<_.max(_.pluck(s,'y'))+1;e = e+2)
+        {
+            counter = counter + 1
+           barData.push({x:counter,y: (_.compact(_.map(s,function(i){if(i.y > e && i.y <= e+2) return i.y }))).length})
+        }
+
+
+
         var scatterChart = new Chart($('#scatter-plot-chart')[0].getContext('2d'), {
             type: 'scatter',
             data: {
@@ -502,6 +515,38 @@
                 }
             }
         });
+
+                var barChart = new Chart($('#scatter-plot-chart')[0].getContext('2d'), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    label: 'Batch BCT Frequency',
+                    data: barData,
+                    pointBackgroundColor:"#000"
+                },
+
+
+
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom',
+                        labelString: "Batches"
+                    }],
+                    yAxes: [{
+                        type: 'linear',
+
+                        labelString: "BCT in hrs"
+                    }],
+
+                }
+            }
+        });
+
+
         $("#chart-modal").modal('show')
     }
 </script>
