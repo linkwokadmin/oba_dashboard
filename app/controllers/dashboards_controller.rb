@@ -120,7 +120,7 @@ class DashboardsController < ApplicationController
                 @product_batch_delay_data = {}
                 @test_data = {}
                 @chart_data ={}
-
+                @bad_batches = []
                 batches.keys.compact.each do |b|
                     @product_batch_delay_data[b] = {}
                     @test_data[b] = {}
@@ -160,6 +160,9 @@ class DashboardsController < ApplicationController
                             end
                             @test_data[b][s.id] << bct_actual
                         end
+                    else 
+                        @bad_batches << batch
+                        
                         end
                     end
                         stage_delay[s.id] = total_delay / batches[b].count
