@@ -43,7 +43,7 @@ class DashboardsController < ApplicationController
 
                     end
 
-                    @product_data << [b,stage_delay]
+                    @product_data << [b,stage_delay,batches[b].count]
                 end
             end
 
