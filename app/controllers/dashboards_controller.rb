@@ -131,9 +131,9 @@ class DashboardsController < ApplicationController
                         @test_data[b][s.id] = []
 
                         total_delay = 0
-                    counter = 0
+                    counter = 1
                     batches[b].each do |batch|
-                        counter = 0
+                        counter = 1
                         if !@chart_data[batch.product_id].present?
                             @chart_data[batch.product_id] = {}
 
