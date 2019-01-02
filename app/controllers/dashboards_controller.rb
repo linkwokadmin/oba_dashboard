@@ -148,11 +148,11 @@ class DashboardsController < ApplicationController
                         batch_start_time = batch_logs.first.timestamp rescue 0
                         batch_end_time = batch_logs.last.timestamp rescue 0
                         if batch_start_time !=0 and batch_end_time !=0 and batch.product.present?
-                        if batch_end_time >= @from_date && batch_end_time <= @to_date || true
+                        if (batch_end_time >= @from_date && batch_end_time <= @to_date) || true
                             bct_plan = batch.product.master_bmrs.where(stage: s).first.bct
                             bct_actual = batch_end_time - batch_start_time
                             delay = bct_actual - bct_plan
-                            if (delay/3600 < 100)
+                            if (delay/3600 < 100 || true)
                                 
                                 @product_batch_delay_data[b][s.id] << delay
                                 total_delay += ((delay > 0) ? delay : 0)
