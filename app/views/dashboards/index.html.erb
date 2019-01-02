@@ -129,7 +129,9 @@
                                 <td><%= (@product_batch_delay_data[p[0]][s.id].max / 3600).round(2) rescue "NA" %></td>
                                 <td><%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %></td>
                                 <td><a href="#" onclick="initScatterChart('<%= @chart_data[p[0]][s.id].to_json %>','<%= Product.find(p[0]).master_bmrs.where(stage: s).first.bct/3600 %>','<%= ((@chart_data[p[0]][s.id].pluck(:y).reduce(:+).to_f / @chart_data[p[0]][s.id].pluck(:y).size)/3600).round(2) %>')">View Chart</a></td>
+                                <td><%= @bad_batches %></td>
                                 <% end %>
+                                
 
 <!--                                <td class="<%#= delay_view_class_for(stream_status[:delay]) %>"><%#= ((stream_status[:delay] > 0) ? distance_of_time_in_words(stream_status[:delay]) : 'None') %></td>-->
                             </tr>
