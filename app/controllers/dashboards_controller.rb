@@ -171,7 +171,7 @@ class DashboardsController < ApplicationController
 
                     end
 
-                    @product_wise_data_bct << [b,stage_delay,batches[b].count]
+                    @product_wise_data_bct << [b,stage_delay,counter]
                 end
             end
 
