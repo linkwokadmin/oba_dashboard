@@ -131,9 +131,9 @@ class DashboardsController < ApplicationController
                         @test_data[b][s.id] = []
 
                         total_delay = 0
-                    counter = 1
+                    
                     batches[b].each do |batch|
-                        counter = 1
+                    
                         if !@chart_data[batch.product_id].present?
                             @chart_data[batch.product_id] = {}
 
@@ -159,19 +159,15 @@ class DashboardsController < ApplicationController
                                 @chart_data[batch.product_id][s.id] << {y:bct_actual/3600,x: @chart_data[batch.product_id][s.id].length}
                             end
                             @test_data[b][s.id] << bct_actual
-
-
-
-
                         end
                         end
                     end
-                        # stage_delay[s.id] = total_delay / batches[b].count
-                        stage_delay[s.id] = total_delay / counter
+                        stage_delay[s.id] = total_delay / batches[b].count
+                        
 
                     end
 
-                    @product_wise_data_bct << [b,stage_delay,counter]
+                    @product_wise_data_bct << [b,stage_delay,batches[b].count]
                 end
             end
 
